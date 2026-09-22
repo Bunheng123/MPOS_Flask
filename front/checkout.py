@@ -1,7 +1,8 @@
 import datetime
 import json
+import os
 import requests
-from flask import render_template, request, make_response
+from flask import render_template, request, make_response, current_app
 from front import front_bp
 from front.cart import _read_cart_cookie
 from product import get_product_by_id
@@ -79,25 +80,28 @@ def do_checkout():
     message += f"<b>Shipping:</b> Free\n"
     message += f"<b>Total:</b> <b>${total:.2f}</b>\n"
 
-    bot_token = "8938674027:AAEy76ioYS5SITn_FL9pip3FYf-avLCtBUs"
-    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    payload = {
-        'text': message,
-        'parse_mode': 'HTML',
-        'chat_id': '@SETEC_PP_SHOP',
-        'disable_web_page_preview': False,
-        'disable_notification': False,
-        'reply_to_message_id': None,
-    }
-    headers = {
-        'accept': 'application/json',
-        'User-Agent': 'Telegram Bot SDK - (https://github.com/irazasyed/telegram-bot-sdk)',
-        'content-type': 'application/json',
-    }
-    try:
-        requests.post(url, json=payload, headers=headers, timeout=10)
-    except Exception:
-        pass
+    bot_token = os.environ.get("TELEGRAM_BOT_TOKEN") or current_app.config.get("TELEGRAM_BOT_TOKEN")
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID") or current_app.config.get("TELEGRAM_CHAT_ID", "@SETEC_PP_SHOP")
+
+    if bot_token:
+        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        payload = {
+            'text': message,
+            'parse_mode': 'HTML',
+            'chat_id': chat_id,
+            'disable_web_page_preview': False,
+            'disable_notification': False,
+            'reply_to_message_id': None,
+        }
+        headers = {
+            'accept': 'application/json',
+            'User-Agent': 'Telegram Bot SDK - (https://github.com/irazasyed/telegram-bot-sdk)',
+            'content-type': 'application/json',
+        }
+        try:
+            requests.post(url, json=payload, headers=headers, timeout=10)
+        except Exception:
+            pass
 
     response = make_response(render_template(
         'front/checkout.html',
