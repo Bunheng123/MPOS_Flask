@@ -1,0 +1,31 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE & Editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local SQLite databases & instance files
+*.sqlite
+*.sqlite3
+*.db
+identifier.sqlite
+instance/
+
+# Flask / environment
+.env
+.flaskenv
+
+# OS-generated files
+.DS_Store
+Thumbs.db

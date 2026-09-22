@@ -1,0 +1,263 @@
+{% extends 'admin/master.html' %} {% block tab_title %}Users{% endblock %} {%
+block content %}
+
+<div
+  class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6"
+>
+  <div>
+    <h2 class="font-display text-2xl font-bold text-text">User Management</h2>
+    <p class="text-text-muted text-xs mt-0.5">
+      Manage your 128 registered users — view, edit, or suspend accounts.
+    </p>
+  </div>
+  <div class="flex gap-2.5 items-center shrink-0">
+    <a
+      class="inline-flex items-center gap-2 bg-violet hover:bg-[#5b4de8] text-white py-2.5 px-5 rounded-lg font-semibold text-xs transition-all shadow-md shadow-violet/20 hover:shadow-violet/35 shrink-0"
+    >
+      <i class="bi bi-person-plus-fill"></i> Export
+    </a>
+    <a
+      href="{{ url_for('admin_bp.add_user') }}"
+      class="inline-flex items-center gap-2 bg-violet hover:bg-[#5b4de8] text-white py-2.5 px-5 rounded-lg font-semibold text-xs transition-all shadow-md shadow-violet/20 hover:shadow-violet/35 shrink-0"
+    >
+      <i class="bi bi-person-plus-fill"></i> Add User
+    </a>
+  </div>
+</div>
+
+<!-- Summary mini-stats -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+  <div
+    class="bg-violet-light border border-violet/15 rounded-2xl p-4 flex items-center gap-4"
+  >
+    <div
+      class="w-10 h-10 rounded-xl bg-violet text-white flex items-center justify-center text-lg shrink-0"
+    >
+      <i class="bi bi-people-fill"></i>
+    </div>
+    <div class="flex flex-col leading-tight">
+      <span class="font-mono text-xl font-bold text-text">128</span>
+      <span class="text-xs text-text-muted mt-0.5">Total Users</span>
+    </div>
+  </div>
+  <div
+    class="bg-teal-light border border-teal/15 rounded-2xl p-4 flex items-center gap-4"
+  >
+    <div
+      class="w-10 h-10 rounded-xl bg-teal text-white flex items-center justify-center text-lg shrink-0"
+    >
+      <i class="bi bi-person-check-fill"></i>
+    </div>
+    <div class="flex flex-col leading-tight">
+      <span class="font-mono text-xl font-bold text-text">114</span>
+      <span class="text-xs text-text-muted mt-0.5">Active</span>
+    </div>
+  </div>
+  <div
+    class="bg-amber-light border border-amber/15 rounded-2xl p-4 flex items-center gap-4"
+  >
+    <div
+      class="w-10 h-10 rounded-xl bg-amber text-white flex items-center justify-center text-lg shrink-0"
+    >
+      <i class="bi bi-person-dash-fill"></i>
+    </div>
+    <div class="flex flex-col leading-tight">
+      <span class="font-mono text-xl font-bold text-text">9</span>
+      <span class="text-xs text-text-muted mt-0.5">Inactive</span>
+    </div>
+  </div>
+  <div
+    class="bg-rose-light border border-rose/15 rounded-2xl p-4 flex items-center gap-4"
+  >
+    <div
+      class="w-10 h-10 rounded-xl bg-rose text-white flex items-center justify-center text-lg shrink-0"
+    >
+      <i class="bi bi-shield-exclamation"></i>
+    </div>
+    <div class="flex flex-col leading-tight">
+      <span class="font-mono text-xl font-bold text-text">3</span>
+      <span class="text-xs text-text-muted mt-0.5">Suspended</span>
+    </div>
+  </div>
+</div>
+
+<!-- Table panel -->
+<div class="bg-card border border-border rounded-2xl p-5 shadow-sm">
+  <div
+    class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-5"
+  >
+    <h3 class="font-display text-sm font-bold text-text flex items-center">
+      <i class="bi bi-table me-2 text-base text-text-muted"></i>All Users
+    </h3>
+    <div class="flex flex-wrap items-center gap-3">
+      <div
+        class="flex items-center gap-2 bg-paper border border-border rounded-lg px-3 py-1.5 text-text-muted focus-within:border-violet transition-colors w-full sm:w-[220px]"
+      >
+        <i class="bi bi-search text-xs"></i>
+        <input
+          type="text"
+          id="userSearch"
+          placeholder="Filter by name or email…"
+          class="border-none bg-transparent outline-none text-xs text-text w-full"
+        />
+      </div>
+      <div class="relative">
+        <button
+          class="inline-flex items-center gap-1.5 border border-border bg-card hover:bg-paper text-text py-1.5 px-3 rounded-lg font-semibold text-xs transition-colors"
+          id="roleFilterBtn"
+        >
+          <i class="bi bi-funnel"></i> Role
+        </button>
+        <ul
+          class="absolute right-0 mt-2 w-40 bg-card border border-border rounded-xl shadow-lg py-1.5 z-40 hidden"
+          id="roleFilterDropdown"
+        >
+          <li>
+            <a
+              class="flex items-center px-4 py-2 text-xs font-medium text-text hover:bg-paper transition-colors"
+              href="#"
+              >All roles</a
+            >
+          </li>
+          <li>
+            <a
+              class="flex items-center px-4 py-2 text-xs font-medium text-text hover:bg-paper transition-colors"
+              href="#"
+              >Admin</a
+            >
+          </li>
+          <li>
+            <a
+              class="flex items-center px-4 py-2 text-xs font-medium text-text hover:bg-paper transition-colors"
+              href="#"
+              >Editor</a
+            >
+          </li>
+          <li>
+            <a
+              class="flex items-center px-4 py-2 text-xs font-medium text-text hover:bg-paper transition-colors"
+              href="#"
+              >Customer</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full overflow-x-auto">
+    <table class="w-full border-collapse" id="userTable">
+      <thead>
+        <tr>
+          <th
+            class="text-[10px] font-bold text-text-muted uppercase tracking-wider text-left border-b border-border px-4 py-3 bg-paper/50"
+          >
+            ID
+          </th>
+          <th
+            class="text-[10px] font-bold text-text-muted uppercase tracking-wider text-left border-b border-border px-4 py-3 bg-paper/50"
+          >
+            Profile
+          </th>
+          <th
+            class="text-[10px] font-bold text-text-muted uppercase tracking-wider text-left border-b border-border px-4 py-3 bg-paper/50"
+          >
+            Username
+          </th>
+          <th
+            class="text-[10px] font-bold text-text-muted uppercase tracking-wider text-left border-b border-border px-4 py-3 bg-paper/50"
+          >
+            Email
+          </th>
+          <th
+            class="text-[10px] font-bold text-text-muted uppercase tracking-wider text-left border-b border-border px-4 py-3 bg-paper/50"
+          >
+            Role
+          </th>
+          <th
+            class="text-[10px] font-bold text-text-muted uppercase tracking-wider text-left border-b border-border px-4 py-3 bg-paper/50"
+          ></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-border">
+        {% for user in users %}
+        <tr class="hover:bg-paper/30 transition-colors">
+          <td class="px-4 py-3.5">{{ user.id }}</td>
+          <td class="px-4 py-3.5">
+            {% if user.profile %}
+            <img
+              src="{{ url_for('static', filename='images/user/' + get_thumb_name(user.profile)) }}"
+              alt="{{ user.username }}"
+              class="w-8 h-8 rounded-full object-cover shrink-0 border border-border"
+            />
+            {% else %}
+            <img
+              src="{{ url_for('static', filename='images/no-image.jpg') }}"
+              alt="{{ user.username }}"
+              class="w-8 h-8 rounded-full object-cover shrink-0 border border-border"
+            />
+            {% endif %}
+          </td>
+          <td class="px-4 py-3.5">
+            <div class="flex flex-col leading-tight">
+              <strong class="text-xs font-semibold text-text"
+                >{{ user.username }}</strong
+              >
+            </div>
+          </td>
+          <td class="px-4 py-3.5 text-xs text-text">{{ user.email }}</td>
+          <td class="px-4 py-3.5">
+            <span
+              class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-light text-violet uppercase"
+              >{{ user.role }}</span
+            >
+          </td>
+          <td class="px-4 py-3.5">
+            <div class="flex gap-1 justify-end">
+              <a
+                href="{{ url_for('admin_bp.edit_user', user_id=user.id) }}"
+                class="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-text-muted hover:text-text hover:bg-paper transition-colors"
+                title="Edit"
+              >
+                <i class="bi bi-pencil text-xs"></i>
+              </a>
+              <a
+                href="{{ url_for('admin_bp.confirm_delete_user', user_id=user.id) }}"
+                class="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-rose hover:text-white hover:bg-rose hover:border-rose transition-colors"
+                title="Delete"
+              >
+                <i class="bi bi-trash text-xs"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="px-4 py-8 text-center text-sm text-text-muted">
+            No users found.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // Live filter
+  document.getElementById("userSearch").addEventListener("input", function () {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll("#userTable tbody tr").forEach((row) => {
+      row.style.display = row.textContent.toLowerCase().includes(q)
+        ? ""
+        : "none";
+    });
+  });
+  // Select all
+  document.getElementById("selectAll").addEventListener("change", function () {
+    document
+      .querySelectorAll(".row-check")
+      .forEach((cb) => (cb.checked = this.checked));
+  });
+</script>
+{% endblock %}

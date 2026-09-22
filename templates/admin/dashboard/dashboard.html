@@ -1,0 +1,147 @@
+{% extends 'admin/master.html' %}
+
+{% block tab_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+  <div>
+    <h2 class="font-display text-2xl font-bold text-text">Welcome back, Amara 👋</h2>
+    <p class="text-text-muted text-xs mt-0.5">Here's what's happening across your store today.</p>
+  </div>
+  <button class="inline-flex items-center gap-2 bg-violet hover:bg-[#5b4de8] text-white py-2.5 px-5 rounded-lg font-semibold text-xs transition-all shadow-md shadow-violet/20 hover:shadow-violet/35 shrink-0">
+    <i class="bi bi-download"></i> Export report
+  </button>
+</div>
+
+<!-- Stat Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+  <div class="bg-card border border-border rounded-2xl p-5 flex items-center gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-lg text-white bg-gradient-to-br from-violet to-[#8b7dfd] shadow-lg shadow-violet/25 shrink-0"><i class="bi bi-currency-dollar"></i></div>
+    <div class="flex flex-col leading-snug">
+      <span class="text-xs text-text-muted font-medium">Revenue (30d)</span>
+      <span class="font-mono text-xl font-bold mt-1 mb-0.5">$48,290</span>
+      <span class="text-[11px] font-semibold text-teal flex items-center gap-0.5"
+        ><i class="bi bi-arrow-up-short text-sm"></i>12.4% vs last month</span
+      >
+    </div>
+  </div>
+  <div class="bg-card border border-border rounded-2xl p-5 flex items-center gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-lg text-white bg-gradient-to-br from-teal to-[#0d9488] shadow-lg shadow-teal/20 shrink-0"><i class="bi bi-people-fill"></i></div>
+    <div class="flex flex-col leading-snug">
+      <span class="text-xs text-text-muted font-medium">New Users</span>
+      <span class="font-mono text-xl font-bold mt-1 mb-0.5">1,204</span>
+      <span class="text-[11px] font-semibold text-teal flex items-center gap-0.5"
+        ><i class="bi bi-arrow-up-short text-sm"></i>4.1% vs last month</span
+      >
+    </div>
+  </div>
+  <div class="bg-card border border-border rounded-2xl p-5 flex items-center gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-lg text-white bg-gradient-to-br from-amber to-[#d97706] shadow-lg shadow-amber/20 shrink-0"><i class="bi bi-bag-check-fill"></i></div>
+    <div class="flex flex-col leading-snug">
+      <span class="text-xs text-text-muted font-medium">Orders</span>
+      <span class="font-mono text-xl font-bold mt-1 mb-0.5">862</span>
+      <span class="text-[11px] font-semibold text-rose flex items-center gap-0.5"
+        ><i class="bi bi-arrow-down-short text-sm"></i>2.3% vs last month</span
+      >
+    </div>
+  </div>
+  <div class="bg-card border border-border rounded-2xl p-5 flex items-center gap-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-lg text-white bg-gradient-to-br from-rose to-[#e11d48] shadow-lg shadow-rose/20 shrink-0"><i class="bi bi-arrow-return-left"></i></div>
+    <div class="flex flex-col leading-snug">
+      <span class="text-xs text-text-muted font-medium">Refund Rate</span>
+      <span class="font-mono text-xl font-bold mt-1 mb-0.5">1.8%</span>
+      <span class="text-[11px] font-semibold text-teal flex items-center gap-0.5"
+        ><i class="bi bi-arrow-down-short text-sm"></i>0.4% improvement</span
+      >
+    </div>
+  </div>
+</div>
+
+<!-- Panels row -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+  <!-- Revenue chart -->
+  <div class="xl:col-span-2 bg-card border border-border rounded-2xl p-5 shadow-sm">
+    <div class="flex justify-between items-center mb-5">
+      <h3 class="font-display text-sm font-bold text-text flex items-center">
+        <i class="bi bi-bar-chart-line-fill me-2 text-violet text-base"></i>Revenue Overview
+      </h3>
+      <div class="flex gap-1 bg-paper rounded-full p-1">
+        <button class="border-none bg-card text-text shadow-sm py-1 px-3 rounded-full text-xs font-bold transition-all duration-150">7d</button>
+        <button class="border-none bg-transparent text-text-muted hover:text-text py-1 px-3 rounded-full text-xs font-bold transition-all duration-150">30d</button>
+        <button class="border-none bg-transparent text-text-muted hover:text-text py-1 px-3 rounded-full text-xs font-bold transition-all duration-150">90d</button>
+      </div>
+    </div>
+    <div class="flex items-end gap-3 md:gap-5 h-[190px] pt-2 pb-6">
+      <div class="flex-1 bg-violet-light hover:bg-violet/25 rounded-t-lg rounded-b-sm relative transition-all duration-200 group" style="height: 52%">
+        <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-text-muted whitespace-nowrap">Mon</span>
+      </div>
+      <div class="flex-1 bg-violet-light hover:bg-violet/25 rounded-t-lg rounded-b-sm relative transition-all duration-200 group" style="height: 68%">
+        <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-text-muted whitespace-nowrap">Tue</span>
+      </div>
+      <div class="flex-1 bg-violet-light hover:bg-violet/25 rounded-t-lg rounded-b-sm relative transition-all duration-200 group" style="height: 45%">
+        <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-text-muted whitespace-nowrap">Wed</span>
+      </div>
+      <div class="flex-1 bg-violet rounded-t-lg rounded-b-sm relative transition-all duration-200 group" style="height: 88%">
+        <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-text-muted font-semibold whitespace-nowrap">Thu</span>
+      </div>
+      <div class="flex-1 bg-violet-light hover:bg-violet/25 rounded-t-lg rounded-b-sm relative transition-all duration-200 group" style="height: 74%">
+        <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-text-muted whitespace-nowrap">Fri</span>
+      </div>
+      <div class="flex-1 bg-violet-light hover:bg-violet/25 rounded-t-lg rounded-b-sm relative transition-all duration-200 group" style="height: 55%">
+        <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-text-muted whitespace-nowrap">Sat</span>
+      </div>
+      <div class="flex-1 bg-violet-light hover:bg-violet/25 rounded-t-lg rounded-b-sm relative transition-all duration-200 group" style="height: 38%">
+        <span class="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] text-text-muted whitespace-nowrap">Sun</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent activity -->
+  <div class="bg-card border border-border rounded-2xl p-5 shadow-sm">
+    <div class="flex justify-between items-center mb-5">
+      <h3 class="font-display text-sm font-bold text-text flex items-center">
+        <i class="bi bi-activity me-2 text-teal text-base"></i>Recent Activity
+      </h3>
+      <button class="w-8 h-8 rounded-lg border border-border flex items-center justify-center text-text-muted hover:text-text hover:bg-paper transition-colors"><i class="bi bi-three-dots"></i></button>
+    </div>
+    <ul class="list-none p-0 m-0 flex flex-col gap-4">
+      <li class="flex items-start gap-3 text-xs leading-normal">
+        <span class="w-2 h-2 rounded-full bg-teal mt-1.5 shrink-0"></span>
+        <div class="flex-grow">
+          New user <strong>Lena Park</strong> registered<br />
+          <small class="text-[10px] text-text-muted block mt-0.5">2 min ago</small>
+        </div>
+      </li>
+      <li class="flex items-start gap-3 text-xs leading-normal">
+        <span class="w-2 h-2 rounded-full bg-violet mt-1.5 shrink-0"></span>
+        <div class="flex-grow">
+          Order <strong>#ORD-2047</strong> confirmed<br />
+          <small class="text-[10px] text-text-muted block mt-0.5">14 min ago</small>
+        </div>
+      </li>
+      <li class="flex items-start gap-3 text-xs leading-normal">
+        <span class="w-2 h-2 rounded-full bg-amber mt-1.5 shrink-0"></span>
+        <div class="flex-grow">
+          Product <strong>Air Max 90</strong> low stock<br />
+          <small class="text-[10px] text-text-muted block mt-0.5">1 hr ago</small>
+        </div>
+      </li>
+      <li class="flex items-start gap-3 text-xs leading-normal">
+        <span class="w-2 h-2 rounded-full bg-rose mt-1.5 shrink-0"></span>
+        <div class="flex-grow">
+          Refund issued for order <strong>#ORD-1982</strong><br />
+          <small class="text-[10px] text-text-muted block mt-0.5">3 hr ago</small>
+        </div>
+      </li>
+      <li class="flex items-start gap-3 text-xs leading-normal">
+        <span class="w-2 h-2 rounded-full bg-teal mt-1.5 shrink-0"></span>
+        <div class="flex-grow">
+          New user <strong>Marco Silva</strong> registered<br />
+          <small class="text-[10px] text-text-muted block mt-0.5">5 hr ago</small>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

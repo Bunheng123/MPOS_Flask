@@ -1,0 +1,53 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Bootstrap Icons -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+  rel="stylesheet"
+/>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          display: ['Space Grotesk', 'sans-serif'],
+          mono: ['JetBrains Mono', 'monospace'],
+        },
+        colors: {
+          ink: '#12151d',
+          'ink-soft': '#1a1f2e',
+          paper: '#f0f2f8',
+          card: '#ffffff',
+          border: '#e4e7f0',
+          text: '#1a2033',
+          'text-muted': '#6b7280',
+          'text-invert': '#bcc4d6',
+          violet: '#6d5efc',
+          'violet-light': 'rgba(109,94,252,0.12)',
+          teal: '#14b8a6',
+          'teal-light': 'rgba(20,184,166,0.12)',
+          amber: '#f59e0b',
+          'amber-light': 'rgba(245,158,11,0.12)',
+          rose: '#f43f5e',
+          'rose-light': 'rgba(244,63,94,0.12)',
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Custom CSS -->
+<link
+  href="{{ url_for('static',filename='admin/css/admin.css') }}"
+  rel="stylesheet"
+/>

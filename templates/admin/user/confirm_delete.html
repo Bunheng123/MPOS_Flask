@@ -1,0 +1,171 @@
+{% extends 'admin/master.html' %} {% block tab_title %}Confirm Delete User{%
+endblock %} {% block content %}
+<div class="max-w-2xl mx-auto my-8">
+  <!-- Back Button -->
+  <div class="mb-6">
+    <a
+      href="{{ url_for('admin_bp.user') }}"
+      class="inline-flex items-center gap-2 text-xs font-semibold text-text-muted hover:text-text transition-colors"
+    >
+      <i class="bi bi-arrow-left"></i> Back to Users
+    </a>
+  </div>
+
+  <!-- Warning Card / Confirmation Details -->
+  <div
+    id="confirmDeleteCard"
+    class="bg-card border border-border rounded-2xl p-6 shadow-sm overflow-hidden relative"
+  >
+    <!-- Red alert top accent line -->
+    <div class="absolute top-0 left-0 right-0 h-1.5 bg-rose"></div>
+
+    <div class="flex items-start gap-4 mt-2">
+      <div
+        class="w-12 h-12 rounded-xl bg-rose-light text-rose flex items-center justify-center text-xl shrink-0"
+      >
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
+      <div>
+        <h2 class="font-display text-xl font-bold text-text">
+          Confirm Delete User Account
+        </h2>
+        <p class="text-text-muted text-xs mt-1">
+          Are you sure you want to permanently delete this user account? This
+          action cannot be undone.
+        </p>
+      </div>
+    </div>
+
+    <!-- User Details Section -->
+    <div
+      class="mt-6 border border-border bg-paper/50 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+    >
+      <div class="flex items-center gap-3">
+        {% if user.profile %}
+        <img
+          src="{{ url_for('static', filename='images/user/' + user.profile) }}"
+          alt="{{ user.username }}"
+          class="w-12 h-12 rounded-full object-cover shrink-0 border border-border"
+        />
+        {% else %}
+        <img
+          src="{{ url_for('static', filename='images/no-image.jpg') }}"
+          alt="{{ user.username }}"
+          class="w-12 h-12 rounded-full object-cover shrink-0 border border-border"
+        />
+        {% endif %}
+        <div class="flex flex-col leading-tight">
+          <strong class="text-base font-semibold text-text"
+            >{{ user.username }}</strong
+          >
+          <small class="text-sm text-text-muted mt-0.5">{{ user.email }}</small>
+        </div>
+      </div>
+
+      <div class="flex gap-6 items-center">
+        <div class="flex flex-col text-right">
+          <span
+            class="text-[10px] font-bold text-text-muted uppercase tracking-wider"
+            >User ID</span
+          >
+          <span class="text-sm font-mono font-semibold text-text mt-0.5"
+            >#{{ user.id }}</span
+          >
+        </div>
+        <div class="flex flex-col text-right">
+          <span
+            class="text-[10px] font-bold text-text-muted uppercase tracking-wider"
+            >Role</span
+          >
+          <div>
+            <span
+              class="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-light text-violet mt-1"
+              >{{ user.role }}</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-8 flex justify-end items-center gap-3">
+      <a
+        href="{{ url_for('admin_bp.user') }}"
+        class="inline-flex items-center gap-2 border border-border bg-card hover:bg-paper text-text py-2.5 px-5 rounded-lg font-semibold text-xs transition-colors"
+      >
+        Cancel
+      </a>
+      <form
+        id="deleteForm"
+        action="{{ url_for('admin_bp.delete_user') }}"
+        method="POST"
+        class="m-0 p-0"
+      >
+        <input type="hidden" name="user_id" value="{{ user.id }}" />
+        <button
+          type="button"
+          id="btnConfirmDelete"
+          class="inline-flex items-center gap-2 bg-rose hover:bg-red-600 text-white py-2.5 px-5 rounded-lg font-semibold text-xs transition-all shadow-md shadow-rose/20 hover:shadow-rose/35 shrink-0"
+        >
+          <i class="bi bi-trash-fill"></i> Confirm Delete
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document
+    .getElementById("btnConfirmDelete")
+    .addEventListener("click", function (e) {
+      e.preventDefault();
+      Swal.fire({
+        target: "#confirmDeleteCard",
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+        background: "#ffffff",
+        color: "#1a2033",
+        iconColor: "#f43f5e",
+        customClass: {
+          popup:
+            "rounded-2xl border border-border shadow-xl font-sans max-w-md p-6 bg-card",
+          title: "font-display font-bold text-lg text-text mb-2",
+          htmlContainer: "text-xs text-text-muted mb-4",
+          confirmButton:
+            "bg-rose hover:bg-rose/90 text-white font-semibold text-xs py-2.5 px-5 rounded-lg transition-colors mr-3 cursor-pointer",
+          cancelButton:
+            "bg-card border border-border hover:bg-paper text-text font-semibold text-xs py-2.5 px-5 rounded-lg transition-colors cursor-pointer shadow-sm",
+        },
+        buttonsStyling: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            target: "#confirmDeleteCard",
+            title: "Deleted!",
+            text: "User {{ user.username }} has been deleted.",
+            icon: "success",
+            confirmButtonText: "OK",
+            background: "#ffffff",
+            color: "#1a2033",
+            iconColor: "#14b8a6",
+            customClass: {
+              popup:
+                "rounded-2xl border border-border shadow-xl font-sans max-w-md p-6 bg-card",
+              title: "font-display font-bold text-lg text-text mb-2",
+              htmlContainer: "text-xs text-text-muted mb-4",
+              confirmButton:
+                "bg-violet hover:bg-violet/90 text-white font-semibold text-xs py-2.5 px-5 rounded-lg transition-colors cursor-pointer",
+            },
+            buttonsStyling: false,
+          }).then(() => {
+            document.getElementById("deleteForm").submit();
+          });
+        }
+      });
+    });
+</script>
+{% endblock %}

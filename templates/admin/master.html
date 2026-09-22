@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block tab_title %}Dashboard{% endblock %} — TechStore Admin</title>
+  {% include 'admin/share/header.html' %}
+</head>
+<body class="bg-paper font-sans text-text antialiased">
+
+<div class="flex min-h-screen w-full">
+
+  <!-- ====== STATIC SIDEBAR ====== -->
+  {% include 'admin/share/sidebar.html' %}
+
+  <!-- ====== MAIN COLUMN ====== -->
+  <div class="flex flex-col min-w-0 min-h-screen flex-1 lg:pl-[260px] transition-all duration-300" id="mainCol">
+
+    <!-- ====== STATIC NAVBAR / TOPBAR ====== -->
+    <header class="sticky top-0 z-30 h-[68px] bg-card border-b border-border flex items-center gap-4 px-6 shrink-0">
+      <!-- Hamburger -->
+      <button class="border border-border bg-card hover:bg-paper w-[38px] h-[38px] rounded-lg flex items-center justify-center text-text text-lg shrink-0 transition-colors" id="sidebarToggle" aria-label="Toggle sidebar">
+        <i class="bi bi-list"></i>
+      </button>
+
+      {% include 'admin/share/navbar.html' %}
+    </header>
+
+    <!-- ====== PAGE CONTENT (only this changes per route) ====== -->
+    <main class="flex-1 p-6 md:p-8 overflow-y-auto fade-in-content">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="h-[52px] border-t border-border bg-card flex items-center justify-between px-6 text-xs text-text-muted">
+      {% include 'admin/share/footer.html' %}
+    </footer>
+
+  </div><!-- /.main-col -->
+</div>
+
+{% include 'admin/share/script.html' %}
+</body>
+</html>

@@ -1,0 +1,102 @@
+/* Custom Scrollbars */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Animations */
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-in-content {
+  animation: fadein 0.3s ease forwards;
+}
+
+/* Sidebar Layout Mechanics (Desktop collapse & Mobile drawer) */
+#sidebar {
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#sidebar.collapsed {
+  width: 80px;
+}
+
+#sidebar.collapsed .brand-name,
+#sidebar.collapsed h1,
+#sidebar.collapsed .sidebar-nav span,
+#sidebar.collapsed .nav-pill,
+#sidebar.collapsed .nav-group-label,
+#sidebar.collapsed .storage-meter,
+#sidebar.collapsed .sidebar-admin-info,
+#sidebar.collapsed .sidebar-logout {
+  display: none !important;
+}
+
+#sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 12px;
+}
+
+#sidebar.collapsed .sidebar-admin-chip {
+  justify-content: center;
+  padding: 10px;
+}
+
+/* Update main content padding based on sidebar state */
+#sidebar.collapsed + #mainCol {
+  padding-left: 80px !important;
+}
+
+/* Responsive Overrides (lg breakpoint is 1024px) */
+@media (max-width: 1023px) {
+  #sidebar {
+    transform: translateX(-100%);
+    width: 260px !important;
+  }
+  #sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.4);
+  }
+  #sidebar.collapsed + #mainCol,
+  #mainCol {
+    padding-left: 0 !important;
+  }
+}
+
+/* Mobile Sidebar Backdrop */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 15, 22, 0.55);
+  z-index: 40;
+  backdrop-filter: blur(2px);
+}
+.sidebar-backdrop.show {
+  display: block;
+}

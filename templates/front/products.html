@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body class="bg-slate-900 text-white">
+    <!-- Navbar -->
+    {% include 'front/share/navbar.html' %}
+
+    <!-- Categories -->
+    <!-- <div class="max-w-7xl mx-auto px-6 mt-12">
+      <h2 class="text-2xl font-bold mb-6">Categories</h2>
+
+      <div class="grid md:grid-cols-4 gap-6">
+        <div class="bg-slate-800 p-6 text-center rounded-xl hover:bg-slate-700">
+          Laptops
+        </div>
+        <div class="bg-slate-800 p-6 text-center rounded-xl hover:bg-slate-700">
+          Keyboards
+        </div>
+        <div class="bg-slate-800 p-6 text-center rounded-xl hover:bg-slate-700">
+          Monitors
+        </div>
+        <div class="bg-slate-800 p-6 text-center rounded-xl hover:bg-slate-700">
+          Accessories
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Products -->
+    <div class="max-w-7xl mx-auto px-6 mt-12">
+      <h2 class="text-2xl font-bold mb-6">Featured Products</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
+        {% for product in products %}
+        <div
+          class="group relative overflow-hidden rounded-[28px] border border-slate-800 bg-slate-900 transition-all duration-500"
+        >
+          <!-- Image -->
+          <a
+            href="{{ url_for('front_bp.product', product_id=product.id) }}"
+            class="relative overflow-hidden block"
+          >
+            <img
+              src="{{ product.image }}"
+              class="w-full h-64 object-cover group-hover:scale-110 transition duration-700"
+            />
+
+            <!-- Overlay -->
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
+            ></div>
+
+            <!-- Category -->
+            <span
+              class="absolute top-4 left-4 bg-white/10 backdrop-blur-lg border border-white/10 text-white text-xs px-4 py-1.5 rounded-full"
+            >
+              {{ product.category }}
+            </span>
+          </a>
+
+          <!-- Content -->
+          <div class="p-5 flex flex-col">
+            <a
+              href="{{ url_for('front_bp.product', product_id=product.id) }}"
+              class="block"
+            >
+              <!-- Product Name -->
+              <h3
+                class="text-white text-lg font-semibold line-clamp-1 group-hover:text-blue-400 transition text-center"
+              >
+                {{ product.name }}
+              </h3>
+
+              <!-- Description -->
+              <p
+                class="text-slate-400 text-sm leading-6 mt-3 line-clamp-2 min-h-[72px] text-center"
+              >
+                {{ product.description }}
+              </p>
+            </a>
+
+            <!-- Bottom -->
+            <div class="mt-6 flex items-center justify-between">
+              <!-- Price -->
+              <div>
+                <p class="text-slate-500 text-xs uppercase tracking-wide">
+                  Price
+                </p>
+
+                <p class="text-2xl font-bold text-white">
+                  ${{ product.price }}
+                </p>
+              </div>
+
+              <!-- Add Button (link-based: will load/redirect) -->
+              <a href="{{ url_for('front_bp.cart') }}?product_id={{ product.id }}">
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition shadow-lg shadow-blue-500/20">
+                  Add Cart
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Footer -->
+      {% include ('front/share/footer.html') %}
+    </div>
+  </body>
+</html>

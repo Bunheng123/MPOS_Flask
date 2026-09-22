@@ -1,0 +1,199 @@
+<aside
+  class="fixed top-0 left-0 bottom-0 z-50 h-full w-[260px] bg-ink text-text-invert flex flex-col overflow-hidden"
+  id="sidebar"
+>
+  <!-- Brand -->
+  <div
+    class="flex items-center gap-3 px-5 py-4 border-b border-white/5 shrink-0"
+  >
+    <!-- Logo -->
+    <a
+      href="{{ url_for('admin_bp.dashboard') }}"
+      class="flex items-center gap-2 group"
+    >
+      <div
+        style="
+          width: 34px;
+          height: 34px;
+          background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+          transition: all 0.3s;
+        "
+        class="nav-logo-icon"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="3" width="20" height="14" rx="2" />
+          <line x1="8" y1="21" x2="16" y2="21" />
+          <line x1="12" y1="17" x2="12" y2="21" />
+        </svg>
+      </div>
+      <h1
+        class="brand-name"
+        style="
+          font-size: 1.25rem;
+          font-weight: 800;
+          background: linear-gradient(90deg, #fff, #94a3b8);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          letter-spacing: -0.5px;
+        "
+      >
+        TechStore
+      </h1>
+    </a>
+  </div>
+
+  <nav
+    class="sidebar-nav flex-1 overflow-y-auto overflow-x-hidden p-3 flex flex-col gap-0.5"
+  >
+    <div
+      class="nav-group-label text-[10px] uppercase tracking-wider text-white/20 font-bold px-3 pt-4 pb-1.5"
+    >
+      Overview
+    </div>
+    <a
+      href="{{ url_for('admin_bp.dashboard') }}"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-invert hover:bg-white/5 hover:text-white transition-all duration-150 relative group {% if module == 'dashboard' or request.endpoint == 'dashboard' or request.endpoint == 'admin_bp.dashboard' %}bg-violet-light text-white before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[3px] before:bg-violet before:rounded-r{% endif %}"
+    >
+      <i
+        class="bi bi-grid-1x2-fill text-base shrink-0 transition-colors {% if module == 'dashboard' or request.endpoint == 'dashboard' %}text-violet{% else %}text-white/40 group-hover:text-white/70{% endif %}"
+      ></i>
+      <span>Dashboard</span>
+    </a>
+    <a
+      href="#"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-invert hover:bg-white/5 hover:text-white transition-all duration-150 relative group"
+    >
+      <i
+        class="bi bi-bar-chart-line-fill text-base shrink-0 text-white/40 group-hover:text-white/70 transition-colors"
+      ></i>
+      <span>Analytics</span>
+    </a>
+
+    <div
+      class="nav-group-label text-[10px] uppercase tracking-wider text-white/20 font-bold px-3 pt-4 pb-1.5"
+    >
+      Manage
+    </div>
+    <a
+      href="{{ url_for('admin_bp.user') }}"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-invert hover:bg-white/5 hover:text-white transition-all duration-150 relative group {% if module in ['user', 'user_add', 'user_edit', 'user_delete'] or request.endpoint in ['user', 'add_user', 'edit_user', 'confirm_delete_user', 'admin_bp.user', 'admin_bp.add_user', 'admin_bp.edit_user', 'admin_bp.confirm_delete_user'] %}bg-violet-light text-white before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[3px] before:bg-violet before:rounded-r{% endif %}"
+    >
+      <i
+        class="bi bi-people-fill text-base shrink-0 transition-colors {% if module in ['user', 'user_add', 'user_edit', 'user_delete'] or request.endpoint in ['user', 'add_user', 'edit_user', 'confirm_delete_user', 'admin_bp.user', 'admin_bp.add_user', 'admin_bp.edit_user', 'admin_bp.confirm_delete_user'] %}text-violet{% else %}text-white/40 group-hover:text-white/70{% endif %}"
+      ></i>
+      <span>Users</span>
+      <span
+        class="ml-auto bg-white/5 text-[10px] font-bold px-2 py-0.5 rounded-full text-text-invert group-hover:bg-white/10 {% if module in ['user', 'user_add', 'user_edit', 'user_delete'] or request.endpoint in ['user', 'add_user', 'edit_user', 'confirm_delete_user', 'admin_bp.user', 'admin_bp.add_user', 'admin_bp.edit_user', 'admin_bp.confirm_delete_user'] %}bg-violet text-white{% endif %}"
+        >128</span
+      >
+    </a>
+    <a
+      href="#"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-invert hover:bg-white/5 hover:text-white transition-all duration-150 relative group"
+    >
+      <i
+        class="bi bi-bag-check-fill text-base shrink-0 text-white/40 group-hover:text-white/70 transition-colors"
+      ></i>
+      <span>Orders</span>
+      <span
+        class="ml-auto bg-white/5 text-[10px] font-bold px-2 py-0.5 rounded-full text-text-invert group-hover:bg-white/10"
+        >37</span
+      >
+    </a>
+    <a
+      href="#"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-invert hover:bg-white/5 hover:text-white transition-all duration-150 relative group"
+    >
+      <i
+        class="bi bi-box-seam-fill text-base shrink-0 text-white/40 group-hover:text-white/70 transition-colors"
+      ></i>
+      <span>Products</span>
+    </a>
+
+    <div
+      class="nav-group-label text-[10px] uppercase tracking-wider text-white/20 font-bold px-3 pt-4 pb-1.5"
+    >
+      System
+    </div>
+    <a
+      href="#"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-invert hover:bg-white/5 hover:text-white transition-all duration-150 relative group"
+    >
+      <i
+        class="bi bi-envelope-fill text-base shrink-0 text-white/40 group-hover:text-white/70 transition-colors"
+      ></i>
+      <span>Messages</span>
+      <span
+        class="ml-auto bg-white/5 text-[10px] font-bold px-2 py-0.5 rounded-full text-text-invert group-hover:bg-white/10"
+        >5</span
+      >
+    </a>
+    <a
+      href="#"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-text-invert hover:bg-white/5 hover:text-white transition-all duration-150 relative group"
+    >
+      <i
+        class="bi bi-gear-fill text-base shrink-0 text-white/40 group-hover:text-white/70 transition-colors"
+      ></i>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <div class="p-4 border-t border-white/5 shrink-0">
+    <div class="storage-meter mb-4">
+      <div class="flex justify-between text-[11px] text-white/50 mb-1.5">
+        <span>Storage used</span>
+        <span class="text-violet font-semibold">50%</span>
+      </div>
+      <div class="h-[5px] rounded-full bg-white/5 overflow-hidden">
+        <div
+          class="h-full bg-gradient-to-r from-teal to-violet rounded-full"
+          style="width: 68%"
+        ></div>
+      </div>
+    </div>
+    <div
+      class="sidebar-admin-chip flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5"
+    >
+      <img
+        src="{{ url_for('static', filename=session.get('profile_image', 'images/no-image.jpg') or 'images/no-image.jpg') }}"
+        alt="{{ session.get('username') }}"
+        class="w-8 h-8 rounded-full object-cover bg-gradient-to-br from-violet to-teal text-white flex items-center justify-center text-[11px] font-bold shrink-0"
+      />
+      <div
+        class="sidebar-admin-info flex-1 min-w-0 flex flex-col leading-tight"
+      >
+        <strong class="text-xs font-semibold text-white truncate"
+          >{{ session.get('username', '')}}</strong
+        >
+        <small class="text-[10px] text-white/40 truncate"
+          >{{session.get('user_role', 'admin')}}</small
+        >
+      </div>
+      <a
+        href="{{ url_for('admin_bp.logout') }}"
+        class="text-white/40 hover:text-rose transition-colors text-base p-1.5 rounded-lg hover:bg-white/5 shrink-0"
+        title="Sign out"
+      >
+        <i class="bi bi-box-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile tap-to-close backdrop -->
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>

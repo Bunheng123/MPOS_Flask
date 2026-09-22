@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body class="bg-slate-900 text-white">
+    <!-- Navbar -->
+    <nav class="bg-slate-950">
+      <div
+        class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <a href="{{ url_for('front_bp.home') }}"
+          ><h1 class="text-xl font-bold">TechStore</h1></a
+        >
+        <a href="{{ url_for('front_bp.cart') }}" class="text-blue-400 hover:underline"
+          >← Back to Cart</a
+        >
+      </div>
+    </nav>
+
+    <!-- Checkout Layout -->
+    <form
+      method="post"
+      action="{{ url_for('front_bp.do_checkout') }}"
+      class="max-w-7xl mx-auto px-6 py-10 grid lg:grid-cols-3 gap-8"
+    >
+      <!-- Billing Info -->
+      <div class="lg:col-span-2 space-y-6">
+        <h2 class="text-2xl font-bold">Billing Details</h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="first_name"
+            placeholder="First Name"
+            class="p-3 bg-slate-800 rounded"
+            required
+          />
+          <input
+            type="text"
+            name="last_name"
+            placeholder="Last Name"
+            class="p-3 bg-slate-800 rounded"
+            required
+          />
+        </div>
+
+        <input
+          type="text"
+          name="address"
+          placeholder="Address"
+          class="w-full p-3 bg-slate-800 rounded"
+          required
+        />
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            class="p-3 bg-slate-800 rounded"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            class="p-3 bg-slate-800 rounded"
+            required
+          />
+        </div>
+
+        <h2 class="text-xl font-bold mt-6">Payment Method</h2>
+
+        <div class="space-y-3">
+          <label
+            class="flex items-center gap-3 bg-slate-800 p-3 rounded cursor-pointer"
+          >
+            <input type="radio" name="payment" value="cod" checked />
+            Cash on Delivery
+          </label>
+
+          <label
+            class="flex items-center gap-3 bg-slate-800 p-3 rounded cursor-pointer"
+          >
+            <input type="radio" name="payment" value="qr" />
+            QR Payment
+          </label>
+        </div>
+
+        <div class="grid gap-4 mt-4">
+          <div class="p-4 rounded-3xl bg-slate-800 border border-slate-700">
+            <p class="font-semibold text-white">
+              Pay with cash when your order arrives
+            </p>
+            <p class="text-slate-400 text-sm mt-2">
+              Choose Cash on Delivery and pay the courier directly. Keep the
+              exact amount ready for a faster delivery.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-3xl bg-slate-800 border border-slate-700">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <p class="font-semibold text-white">Scan to pay with QR</p>
+                <p class="text-slate-400 text-sm mt-2">
+                  Select QR Payment and use your bank app to scan the code
+                  below.
+                </p>
+              </div>
+            </div>
+            <div
+              class="mt-4 rounded-3xl overflow-hidden bg-slate-950 p-4 flex justify-center"
+            >
+              <img
+                src="{{ url_for('static', filename='assets/QR.PNG') }}"
+                alt="QR Payment Code"
+                class="w-64 h-64 object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div
+        class="bg-slate-800 p-6 rounded-3xl shadow-2xl shadow-slate-950/40 border border-white/10"
+      >
+        <div class="flex items-start justify-between gap-3 mb-6">
+          <div>
+            <p
+              class="text-sm uppercase tracking-[0.3em] text-indigo-300 font-semibold mb-2"
+            >
+              Order preview
+            </p>
+            <h3 class="text-2xl font-bold">Your Order</h3>
+          </div>
+          {% if cart_items %}
+          <span class="text-sm text-slate-400"
+            >{{ cart_items|length }} items</span
+          >
+          {% endif %}
+        </div>
+
+        {% if order_placed %}
+        <div
+          class="mb-6 p-4 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-200"
+        >
+          <p class="font-semibold">Order placed successfully!</p>
+          {% if order_info %}
+          <p class="text-sm text-slate-300 mt-1">
+            We sent the order details to Telegram.
+          </p>
+          {% endif %}
+        </div>
+        {% endif %} {% if order_info and order_placed %}
+        <div
+          class="mb-6 p-4 rounded-3xl bg-slate-900 border border-slate-700 text-slate-200"
+        >
+          <div class="grid gap-2 text-sm">
+            <div>
+              <span class="font-semibold">Name:</span> {{ order_info.first_name
+              }} {{ order_info.last_name }}
+            </div>
+            <div>
+              <span class="font-semibold">Address:</span> {{ order_info.address
+              }}
+            </div>
+            <div>
+              <span class="font-semibold">Phone:</span> {{ order_info.phone }}
+            </div>
+            <div>
+              <span class="font-semibold">Email:</span> {{ order_info.email }}
+            </div>
+            <div>
+              <span class="font-semibold">Payment:</span> {{ order_info.payment
+              }}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="space-y-4 mb-6">
+          {% if cart_items %} {% for item in cart_items %}
+          <div
+            class="flex items-center gap-4 p-4 rounded-3xl bg-slate-900 border border-slate-700"
+          >
+            <div
+              class="w-20 h-20 rounded-3xl overflow-hidden bg-slate-800 flex items-center justify-center"
+            >
+              <img
+                src="{{ item.image }}"
+                alt="{{ item.name }}"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-white truncate">{{ item.name }}</p>
+              <p class="text-slate-400 text-sm line-clamp-2">
+                {{ item.description }}
+              </p>
+              <div
+                class="mt-3 flex items-center justify-between gap-4 text-sm text-slate-300"
+              >
+                <span>Qty: {{ item.qty }}</span>
+                <span>${{ "%.2f"|format(item.price * item.qty) }}</span>
+              </div>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <div class="text-slate-400">Your cart is empty.</div>
+          {% endif %}
+        </div>
+
+        <div class="space-y-4 mb-6">
+          <div class="flex justify-between text-slate-400">
+            <span>Subtotal</span>
+            <span
+              >${{ "%.2f"|format(subtotal if subtotal is defined else 0)
+              }}</span
+            >
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Shipping</span>
+            <span
+              >{{ "Free" if shipping == 0 else "$%.2f"|format(shipping) }}</span
+            >
+          </div>
+          <div
+            class="flex justify-between font-semibold text-xl text-white border-t border-white/10 pt-4"
+          >
+            <span>Total</span>
+            <span>${{ "%.2f"|format(total if total is defined else 0) }}</span>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-indigo-500 to-cyan-500 py-3 rounded-3xl font-semibold text-slate-950 transition hover:brightness-110"
+        >
+          Place Order
+        </button>
+      </div>
+    </form>
+
+    <!-- Footer -->
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>

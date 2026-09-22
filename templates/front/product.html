@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% include 'front/share/header.html' %}
+  </head>
+  <body class="bg-slate-900 text-white">
+    <!-- Navbar -->
+    {% include 'front/share/navbar.html' %}
+
+    <!-- Product Section -->
+    <div class="max-w-7xl mx-auto px-6 py-16">
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <!-- Product Image -->
+        <div class="relative group">
+          <div
+            class="overflow-hidden rounded-[32px] border border-slate-800 bg-slate-900"
+          >
+            <img
+              id="mainImage"
+              src="{{ product.image }}"
+              class="w-full h-[600px] object-cover group-hover:scale-105 transition duration-700"
+            />
+          </div>
+
+          <!-- Category -->
+          <div class="absolute top-6 left-6">
+            <span
+              class="bg-blue-500/20 text-blue-400 border border-blue-500/30 px-4 py-2 rounded-full text-sm backdrop-blur-lg"
+            >
+              {{ product.category }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div
+          class="bg-slate-800/40 backdrop-blur-xl border border-slate-700 rounded-[32px] p-8"
+        >
+          <p
+            class="text-blue-400 uppercase tracking-[4px] text-sm font-semibold"
+          >
+            Premium Product
+          </p>
+
+          <h1 class="text-5xl font-bold mt-3 leading-tight">
+            {{ product.name }}
+          </h1>
+
+          <!-- Price -->
+          <div class="mt-6 flex items-center gap-4">
+            <span class="text-5xl font-bold text-white">
+              ${{ product.price }}
+            </span>
+
+            <span
+              class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm"
+            >
+              In Stock
+            </span>
+          </div>
+
+          <!-- Description -->
+          <p class="text-slate-400 leading-8 mt-8 text-lg">
+            {{ product.description }}
+          </p>
+
+          <!-- Features -->
+          <div class="grid grid-cols-2 gap-4 mt-8">
+            <div class="bg-slate-900 rounded-2xl p-4 border border-slate-700">
+              <p class="text-slate-500 text-sm">Category</p>
+              <p class="font-semibold mt-1">{{ product.category }}</p>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl p-4 border border-slate-700">
+              <p class="text-slate-500 text-sm">Availability</p>
+              <p class="font-semibold mt-1 text-green-400">Ready Stock</p>
+            </div>
+          </div>
+
+
+
+          <!-- Buttons -->
+         <div class="grid sm:grid-cols-2 gap-4 mt-10">
+
+            <a
+              href="{{ url_for('front_bp.cart') }}?product_id={{ product.id }}"
+              class="h-14 flex items-center justify-center rounded-2xl bg-blue-500 hover:bg-blue-600 font-semibold transition shadow-lg shadow-blue-500/30 w-full"
+            >
+              Add To Cart
+            </a>
+
+            <a
+              href="#"
+              class="h-14 flex items-center justify-center rounded-2xl bg-emerald-500 hover:bg-emerald-600 font-semibold transition shadow-lg shadow-emerald-500/30 w-full"
+            >
+              Buy Now
+            </a>
+
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="max-w-7xl mx-auto px-6 pb-16">
+      <!-- Section Header -->
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <p
+            class="text-blue-400 uppercase tracking-[4px] text-sm font-semibold"
+          >
+            Discover More
+          </p>
+
+          <h3 class="text-3xl font-bold text-white mt-2">Related Products</h3>
+        </div>
+
+        <a
+          href="{{ url_for('front_bp.products') }}"
+          class="text-sm text-slate-400 hover:text-white transition"
+        >
+          View All →
+        </a>
+      </div>
+
+      <!-- Grid -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {% for product in related_product %}
+
+        <div
+          class="group relative overflow-hidden rounded-[28px] border border-slate-800 bg-slate-900 hover:border-blue-500/50 transition-all duration-500 hover:-translate-y-2"
+        >
+          <!-- Glow -->
+          <div
+            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500"
+          >
+            <div
+              class="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 h-40 bg-blue-500/20 blur-3xl"
+            ></div>
+          </div>
+
+          <!-- Image -->
+          <a
+            href="{{ url_for('front_bp.product', product_id=product.id) }}"
+            class="relative overflow-hidden block"
+          >
+            <img
+              src="{{ product.image }}"
+              class="w-full h-64 object-cover group-hover:scale-110 transition duration-700"
+            />
+
+            <!-- Overlay -->
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
+            ></div>
+
+            <!-- Category -->
+            <span
+              class="absolute top-4 left-4 bg-white/10 backdrop-blur-lg border border-white/10 text-white text-xs px-4 py-1.5 rounded-full"
+            >
+              {{ product.category }}
+            </span>
+
+            <!-- Quick Button -->
+            <button
+              class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white opacity-0 group-hover:opacity-100 transition pointer-events-none"
+            >
+              +
+            </button>
+          </a>
+
+          <!-- Content -->
+          <div class="p-5 flex flex-col">
+            <!-- Product -->
+            <a href="{{ url_for('front_bp.product', product_id=product.id) }}">
+              <h3
+                class="text-white text-lg font-semibold line-clamp-1 group-hover:text-blue-400 transition text-center"
+              >
+                {{ product.name }}
+              </h3>
+            </a>
+
+            <!-- Description -->
+            <p
+              class="text-slate-400 text-sm leading-6 mt-3 line-clamp-2 min-h-[72px] text-center"
+            >
+              {{ product.description }}
+            </p>
+
+            <!-- Bottom -->
+            <div class="mt-6 flex items-center justify-between">
+              <!-- Price -->
+              <div>
+                <p class="text-slate-500 text-xs uppercase tracking-wide">
+                  Price
+                </p>
+
+                <p class="text-2xl font-bold text-white">
+                  ${{ product.price }}
+                </p>
+              </div>
+
+              <!-- Add Button (link-based: will load/redirect) -->
+              <a
+                href="{{ url_for('front_bp.cart') }}?product_id={{ product.id }}"
+              >
+                <button
+                  class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition shadow-lg shadow-blue-500/20"
+                >
+                  Add Cart
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+    </div>
+    <!-- Footer -->
+    {% include 'front/share/footer.html' %}
+  </body>
+</html>
