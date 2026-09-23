@@ -25,7 +25,7 @@ class Config:
     TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "@SETEC_PP_SHOP")
 
     # Telegram security alert configurations (Rate limits / Attack monitoring)
-    TELEGRAM_ALERT_BOT_TOKEN = os.environ.get("TELEGRAM_ALERT_BOT_TOKEN", "8614732208:AAF3-grNCTy8Fz3onUc3Q7Ug7N2ACAwbYtA")
+    TELEGRAM_ALERT_BOT_TOKEN = os.environ.get("TELEGRAM_ALERT_BOT_TOKEN", "")
     TELEGRAM_ALERT_CHAT_ID = os.environ.get("TELEGRAM_ALERT_CHAT_ID", "@pp_shop_alert")
 
 # Module-level shortcuts for convenience
