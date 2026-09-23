@@ -20,12 +20,18 @@ class Config:
     UPLOAD_DIR = os.path.join("static", "images", "user")
     ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 
-    # Telegram bot configurations
+    # Telegram bot configurations (Orders / General)
     TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
     TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "@SETEC_PP_SHOP")
+
+    # Telegram security alert configurations (Rate limits / Attack monitoring)
+    TELEGRAM_ALERT_BOT_TOKEN = os.environ.get("TELEGRAM_ALERT_BOT_TOKEN", "8614732208:AAF3-grNCTy8Fz3onUc3Q7Ug7N2ACAwbYtA")
+    TELEGRAM_ALERT_CHAT_ID = os.environ.get("TELEGRAM_ALERT_CHAT_ID", "@pp_shop_alert")
 
 # Module-level shortcuts for convenience
 UPLOAD_DIR = Config.UPLOAD_DIR
 ALLOWED_EXT = Config.ALLOWED_EXTENSIONS
 TELEGRAM_BOT_TOKEN = Config.TELEGRAM_BOT_TOKEN
 TELEGRAM_CHAT_ID = Config.TELEGRAM_CHAT_ID
+TELEGRAM_ALERT_BOT_TOKEN = Config.TELEGRAM_ALERT_BOT_TOKEN
+TELEGRAM_ALERT_CHAT_ID = Config.TELEGRAM_ALERT_CHAT_ID

@@ -1,0 +1,144 @@
+{% extends 'Error/base.html' %}
+
+{% block title %}500 Internal Server Error{% endblock %}
+
+{% block bg_glow_right %}bg-rose/10{% endblock %}
+{% block bg_glow_bottom %}bg-amber/10{% endblock %}
+
+{% block content %}
+<div class="bg-card border border-border/80 shadow-2xl shadow-slate-200/60 rounded-3xl p-6 sm:p-10 relative overflow-hidden backdrop-blur-sm transition-all text-center">
+  <!-- Top Accent Gradient Line -->
+  <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-rose via-amber to-rose"></div>
+
+  <!-- Status Pill -->
+  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-light border border-rose/25 text-rose text-xs font-mono font-semibold uppercase tracking-wider mb-6">
+    <span class="w-2 h-2 rounded-full bg-rose animate-ping"></span>
+    <span>HTTP 500 • Internal Server Error</span>
+  </div>
+
+  <!-- Hero Visual / Big Number & Icon -->
+  <div class="relative my-2 select-none flex items-center justify-center">
+    <!-- Big glowing 500 number -->
+    <h1 class="font-display text-8xl sm:text-9xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-rose via-[#e11d48] to-amber opacity-95">
+      500
+    </h1>
+
+    <!-- Floating Badge Icon -->
+    <div class="absolute -bottom-2 sm:-bottom-3 bg-card border border-border/80 p-3 sm:p-3.5 rounded-2xl shadow-lg shadow-rose/20 text-rose text-2xl sm:text-3xl animate-float">
+      <i class="bi bi-cpu"></i>
+    </div>
+  </div>
+
+  <!-- Primary Headline and Description -->
+  <div class="mt-8 mb-6 max-w-lg mx-auto">
+    <h2 class="font-display text-2xl sm:text-3xl font-bold text-ink">
+      System Encountered a Hiccup
+    </h2>
+    <p class="text-text-muted text-sm sm:text-base mt-2.5 leading-relaxed">
+      Our backend server encountered an unhandled exception while attempting to process your request. A crash snapshot has been logged for our engineering team.
+    </p>
+  </div>
+
+  <!-- Incident Details & Collapsible Diagnostics -->
+  <div class="bg-paper/70 border border-border/80 rounded-2xl p-4 sm:p-5 mb-8 text-left max-w-lg mx-auto">
+    <div class="flex items-center justify-between pb-3 border-b border-border/70 text-xs">
+      <div class="flex items-center gap-2">
+        <i class="bi bi-ticket-perforated-fill text-rose"></i>
+        <span class="font-medium text-text-muted">Incident Reference:</span>
+      </div>
+      <span class="font-mono font-semibold text-rose bg-rose-light px-2 py-0.5 rounded border border-rose/20 text-[11px]">
+        #INC-{{ (range(100000, 999999)|random) }}
+      </span>
+    </div>
+
+    <div class="pt-3 flex items-center justify-between text-xs text-text-muted">
+      <span>Timestamp:</span>
+      <span class="font-mono text-[11px]" id="errTimestamp">2026-09-22 22:05 UTC</span>
+    </div>
+
+    <!-- Collapsible Diagnostics Accordion -->
+    <div class="mt-4 pt-3 border-t border-border/70">
+      <button
+        type="button"
+        onclick="toggleDiagnostics()"
+        class="w-full flex items-center justify-between text-xs font-semibold text-text hover:text-rose transition-colors py-1 group"
+      >
+        <span class="flex items-center gap-1.5">
+          <i class="bi bi-terminal text-text-muted group-hover:text-rose"></i>
+          Technical Diagnostics
+        </span>
+        <i id="diagChevron" class="bi bi-chevron-down text-text-muted text-[11px] transition-transform duration-200"></i>
+      </button>
+
+      <div id="diagDetails" class="hidden mt-3 p-3 bg-card border border-border rounded-xl text-left font-mono text-[11px] space-y-1.5 overflow-x-auto">
+        <div class="text-text-muted">
+          <span class="text-text font-semibold">Request Path:</span> {{ request.path if request else '/unknown' }}
+        </div>
+        <div class="text-text-muted">
+          <span class="text-text font-semibold">Method:</span> {{ request.method if request else 'GET' }}
+        </div>
+        {% if error %}
+        <div class="text-rose font-medium pt-1">
+          <span class="text-text font-semibold">Exception:</span> {{ error }}
+        </div>
+        {% endif %}
+        <div class="text-text-muted/80 text-[10px] pt-1">
+          Recommendation: Verify database connectivity, migrations, or reload the application server.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-wrap items-center justify-center gap-3">
+    <button
+      onclick="location.reload()"
+      class="inline-flex items-center justify-center gap-2 bg-rose hover:bg-rose-hover text-white py-2.5 px-6 rounded-xl font-semibold text-xs transition-all shadow-md shadow-rose/20 hover:shadow-rose/35 hover:-translate-y-0.5"
+    >
+      <i class="bi bi-arrow-clockwise"></i>
+      <span>Reload Page</span>
+    </button>
+
+    <a
+      href="{{ url_for('admin_bp.dashboard') }}"
+      class="inline-flex items-center justify-center gap-2 border border-border bg-card hover:bg-paper text-text py-2.5 px-5 rounded-xl font-semibold text-xs transition-all hover:border-slate-300 hover:-translate-y-0.5"
+    >
+      <i class="bi bi-speedometer2"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <a
+      href="{{ url_for('front_bp.home') }}"
+      class="inline-flex items-center justify-center gap-2 border border-border bg-card hover:bg-paper text-text-muted hover:text-text py-2.5 px-4 rounded-xl font-semibold text-xs transition-all"
+    >
+      <i class="bi bi-shop"></i>
+      <span>Storefront</span>
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function toggleDiagnostics() {
+    const details = document.getElementById('diagDetails');
+    const chevron = document.getElementById('diagChevron');
+    if (details.classList.contains('hidden')) {
+      details.classList.remove('hidden');
+      chevron.classList.add('rotate-180');
+    } else {
+      details.classList.add('hidden');
+      chevron.classList.remove('rotate-180');
+    }
+  }
+
+  // Populate dynamic local time (Cambodia)
+  (function() {
+    const timeElem = document.getElementById('errTimestamp');
+    if (timeElem) {
+      const now = new Date();
+      timeElem.textContent = now.toLocaleString('en-US', { timeZone: 'Asia/Phnom_Penh', hour12: true }) + ' (GMT+7)';
+    }
+  })();
+</script>
+{% endblock %}

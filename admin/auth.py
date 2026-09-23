@@ -3,16 +3,18 @@ from sqlalchemy import text
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from admin import admin_bp
-from extensions import db
+from extensions import db, limiter
 from models.user import User
 from helpers.upload import get_thumb_name
 
 @admin_bp.get('/login', endpoint='login')
+@limiter.limit("10 per minute") #able to refresh 10 time/ 1 minutes
 def login():
     module = 'login'
     return render_template('login.html', module=module)
 
 @admin_bp.post('/login', endpoint='do_login')
+@limiter.limit("3 per minute") #allow only 3 attempts
 def do_login():
     module = 'login'
     form = request.form
