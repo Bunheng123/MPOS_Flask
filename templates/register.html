@@ -100,6 +100,8 @@
 
         <!-- Register Form -->
         <form action="{{ url_for('admin_bp.do_register') }}" method="POST" class="space-y-4" autocomplete="off">
+          <!-- CSRF Token -->
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           
           <!-- Username field -->
           <div>

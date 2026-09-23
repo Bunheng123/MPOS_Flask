@@ -24,6 +24,9 @@
       action="{{ url_for('front_bp.do_checkout') }}"
       class="max-w-7xl mx-auto px-6 py-10 grid lg:grid-cols-3 gap-8"
     >
+      <!-- CSRF Token -->
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
       <!-- Billing Info -->
       <div class="lg:col-span-2 space-y-6">
         <h2 class="text-2xl font-bold">Billing Details</h2>

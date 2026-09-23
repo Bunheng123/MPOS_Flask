@@ -139,6 +139,9 @@
             class="space-y-4"
             autocomplete="off"
           >
+            <!-- CSRF Token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
             <!-- Username field -->
             <div>
               <label

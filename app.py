@@ -1,7 +1,7 @@
 import sys
 from flask import Flask, url_for, render_template, request, jsonify
 from config import Config
-from extensions import db, migrate, limiter
+from extensions import db, migrate, limiter, csrf
 from helpers.upload import (
     save_user_image,
     delete_profile_image,
@@ -24,6 +24,7 @@ app.config.from_object(Config)
 db.init_app(app)
 migrate.init_app(app, db)
 limiter.init_app(app)
+csrf.init_app(app)
 
 # Load Models
 import models
@@ -49,6 +50,7 @@ from api import api_bp
 app.register_blueprint(front_bp, url_prefix="/")
 app.register_blueprint(admin_bp, url_prefix="/admin")
 app.register_blueprint(api_bp, url_prefix="/api")
+csrf.exempt(api_bp)
 
 # Error handlers
 from errors import register_error_handlers

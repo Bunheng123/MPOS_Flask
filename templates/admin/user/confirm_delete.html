@@ -101,6 +101,7 @@ endblock %} {% block content %}
         method="POST"
         class="m-0 p-0"
       >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="user_id" value="{{ user.id }}" />
         <button
           type="button"

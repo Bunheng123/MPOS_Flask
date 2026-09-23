@@ -26,6 +26,8 @@
     <div class="bg-card border border-border rounded-2xl shadow-sm p-6">
 
         <form action="{{ url_for('admin_bp.add_user') }}" method="POST" enctype="multipart/form-data">
+            <!-- CSRF Token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <!-- Profile Image Section -->
             <div class="mb-6 pb-6 border-b border-border flex flex-col sm:flex-row items-center gap-5">
