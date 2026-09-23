@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Error{% endblock %} — TechStore Admin</title>
+
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS with Admin UI Theme Configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Space Grotesk", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            colors: {
+              ink: "#12151d",
+              "ink-soft": "#1a1f2e",
+              paper: "#f0f2f8",
+              card: "#ffffff",
+              border: "#e4e7f0",
+              text: "#1a2033",
+              "text-muted": "#6b7280",
+              "text-invert": "#bcc4d6",
+              violet: "#6d5efc",
+              "violet-hover": "#5b4de8",
+              "violet-light": "rgba(109,94,252,0.12)",
+              teal: "#14b8a6",
+              "teal-hover": "#0d9488",
+              "teal-light": "rgba(20,184,166,0.12)",
+              amber: "#f59e0b",
+              "amber-hover": "#d97706",
+              "amber-light": "rgba(245,158,11,0.12)",
+              rose: "#f43f5e",
+              "rose-hover": "#e11d48",
+              "rose-light": "rgba(244,63,94,0.12)",
+            },
+            boxShadow: {
+              card: "0 10px 30px -5px rgba(18, 21, 29, 0.06), 0 4px 12px -2px rgba(18, 21, 29, 0.03)",
+              glow: "0 0 25px -5px var(--glow-color, rgba(109, 94, 252, 0.35))",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Custom Admin CSS -->
+    <link
+      href="{{ url_for('static', filename='admin/css/admin.css') }}"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Micro-animations */
+      @keyframes floatSlow {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-8px) rotate(1.5deg); }
+      }
+      @keyframes pulseGlow {
+        0%, 100% { opacity: 0.4; transform: scale(1); }
+        50% { opacity: 0.75; transform: scale(1.05); }
+      }
+      .animate-float {
+        animation: floatSlow 5s ease-in-out infinite;
+      }
+      .animate-pulse-glow {
+        animation: pulseGlow 4s ease-in-out infinite;
+      }
+    </style>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body
+    class="bg-paper font-sans text-text antialiased min-h-screen flex flex-col justify-between selection:bg-violet selection:text-white relative overflow-x-hidden"
+  >
+    <!-- Background Ambient Glow Accents matching Admin UI -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+      <div
+        class="absolute -top-32 -left-32 w-96 h-96 bg-violet/10 rounded-full blur-3xl animate-pulse-glow"
+      ></div>
+      <div
+        class="absolute top-1/3 -right-32 w-[28rem] h-[28rem] {% block bg_glow_right %}bg-teal/10{% endblock %} rounded-full blur-3xl animate-pulse-glow"
+        style="animation-delay: 2s;"
+      ></div>
+      <div
+        class="absolute -bottom-32 left-1/3 w-80 h-80 {% block bg_glow_bottom %}bg-violet/10{% endblock %} rounded-full blur-3xl animate-pulse-glow"
+        style="animation-delay: 3s;"
+      ></div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="w-full border-b border-border/80 bg-card/80 backdrop-blur-md sticky top-0 z-40 transition-all">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-[68px] flex items-center justify-between gap-4">
+        <!-- Brand Link -->
+        <a
+          href="{{ url_for('admin_bp.dashboard') }}"
+          class="flex items-center gap-3 group transition-transform hover:scale-[1.02]"
+        >
+          <!-- Logo Icon -->
+          <div
+            style="
+              width: 36px;
+              height: 36px;
+              background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+              border-radius: 10px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
+            "
+            class="shrink-0 transition-shadow group-hover:shadow-violet/50"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="font-display font-bold text-lg text-ink tracking-tight">TechStore</span>
+            <span class="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-violet-light text-violet border border-violet/20 font-semibold hidden sm:inline-block">
+              Admin Portal
+            </span>
+          </div>
+        </a>
+
+        <!-- Quick Header Actions -->
+        <div class="flex items-center gap-2.5">
+          <!-- System Status Pill -->
+          <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-paper border border-border text-xs text-text-muted">
+            <span class="w-2 h-2 rounded-full bg-teal animate-pulse"></span>
+            <span class="font-mono text-[11px]">System Status</span>
+          </div>
+
+          <a
+            href="{{ url_for('front_bp.home') }}"
+            class="inline-flex items-center gap-1.5 text-xs font-semibold text-text-muted hover:text-ink px-3 py-2 rounded-xl hover:bg-slate-200/50 transition-colors"
+          >
+            <i class="bi bi-shop"></i>
+            <span class="hidden sm:inline">Storefront</span>
+          </a>
+
+          <a
+            href="{{ url_for('admin_bp.dashboard') }}"
+            class="inline-flex items-center gap-1.5 text-xs font-semibold bg-violet text-white hover:bg-violet-hover px-3.5 py-2 rounded-xl transition-all shadow-sm shadow-violet/25 hover:shadow-violet/40"
+          >
+            <i class="bi bi-grid-fill"></i>
+            <span>Dashboard</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 relative z-10 fade-in-content">
+      <div class="w-full max-w-2xl mx-auto my-6">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-border/80 bg-card/60 backdrop-blur-sm py-4 px-6 text-center text-xs text-text-muted">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <span>&copy; 2026 TechStore POS &amp; Admin Suite</span>
+          <span class="text-border">•</span>
+          <span class="font-mono text-[11px] text-text-muted/80">v2.4.0-stable</span>
+        </div>
+        <div class="flex items-center gap-4 text-xs">
+          <a href="{{ url_for('admin_bp.dashboard') }}" class="hover:text-text transition-colors">Admin Home</a>
+          <span class="text-border">•</span>
+          <a href="{{ url_for('front_bp.home') }}" class="hover:text-text transition-colors">Shop</a>
+          <span class="text-border">•</span>
+          <a href="mailto:support@techstore.local" class="hover:text-text transition-colors">Support Desk</a>
+        </div>
+      </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
