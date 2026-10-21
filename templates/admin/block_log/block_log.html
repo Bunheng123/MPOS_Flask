@@ -1,0 +1,221 @@
+{% extends 'admin/master.html' %}
+{% block tab_title %}Block Logs{% endblock %}
+{% block content %}
+
+<!-- Header & Action Controls -->
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+  <div>
+    <h2 class="font-display text-2xl font-bold text-text flex items-center gap-2.5">
+      <i class="bi bi-shield-slash-fill text-rose"></i>
+      Security & Rate Limit Logs
+    </h2>
+    <p class="text-text-muted text-xs mt-1">
+      Real-time record of incoming requests blocked by HTTP 429 (Too Many Requests) traffic control.
+    </p>
+  </div>
+  <div class="flex gap-2.5 items-center shrink-0">
+    {% if logs %}
+    <form action="{{ url_for('admin_bp.clear_block_logs') }}" method="POST" onsubmit="return confirm('Are you sure you want to clear all rate limit block records?');">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+      <button
+        type="submit"
+        class="inline-flex items-center gap-2 bg-card hover:bg-rose-light text-rose border border-rose/30 hover:border-rose/50 py-2 px-4 rounded-lg font-semibold text-xs transition-all shadow-sm"
+      >
+        <i class="bi bi-trash3-fill"></i> Clear Logs
+      </button>
+    </form>
+    {% endif %}
+    <a
+      href="{{ url_for('admin_bp.block_logs') }}"
+      class="inline-flex items-center gap-2 bg-violet hover:bg-[#5b4de8] text-white py-2 px-4 rounded-lg font-semibold text-xs transition-all shadow-md shadow-violet/20 hover:shadow-violet/35 shrink-0"
+    >
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </a>
+  </div>
+</div>
+
+<!-- Summary Mini-Stats -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+  <!-- Total Blocks -->
+  <div class="bg-rose-light border border-rose/20 rounded-2xl p-4 flex items-center gap-4">
+    <div class="w-10 h-10 rounded-xl bg-rose text-white flex items-center justify-center text-lg shrink-0 shadow-sm shadow-rose/30">
+      <i class="bi bi-shield-x"></i>
+    </div>
+    <div class="flex flex-col leading-tight">
+      <span class="font-mono text-xl font-bold text-text">{{ total_blocks }}</span>
+      <span class="text-xs text-text-muted mt-0.5">Total Block Events (429)</span>
+    </div>
+  </div>
+
+  <!-- Unique IPs -->
+  <div class="bg-amber-light border border-amber/20 rounded-2xl p-4 flex items-center gap-4">
+    <div class="w-10 h-10 rounded-xl bg-amber text-white flex items-center justify-center text-lg shrink-0 shadow-sm shadow-amber/30">
+      <i class="bi bi-hdd-network-fill"></i>
+    </div>
+    <div class="flex flex-col leading-tight">
+      <span class="font-mono text-xl font-bold text-text">{{ unique_ips }}</span>
+      <span class="text-xs text-text-muted mt-0.5">Unique Blocked IPs</span>
+    </div>
+  </div>
+
+  <!-- Top Endpoint Target -->
+  <div class="bg-violet-light border border-violet/20 rounded-2xl p-4 flex items-center gap-4">
+    <div class="w-10 h-10 rounded-xl bg-violet text-white flex items-center justify-center text-lg shrink-0 shadow-sm shadow-violet/30">
+      <i class="bi bi-diagram-3-fill"></i>
+    </div>
+    <div class="flex flex-col leading-tight min-w-0">
+      <span class="font-mono text-sm font-bold text-text truncate" title="{{ top_endpoint }}">{{ top_endpoint }}</span>
+      <span class="text-xs text-text-muted mt-0.5">Most Targeted Route</span>
+    </div>
+  </div>
+
+  <!-- Active Policy -->
+  <div class="bg-teal-light border border-teal/20 rounded-2xl p-4 flex items-center gap-4">
+    <div class="w-10 h-10 rounded-xl bg-teal text-white flex items-center justify-center text-lg shrink-0 shadow-sm shadow-teal/30">
+      <i class="bi bi-stopwatch-fill"></i>
+    </div>
+    <div class="flex flex-col leading-tight">
+      <span class="font-mono text-sm font-bold text-text">60s Rolling Window</span>
+      <span class="text-xs text-text-muted mt-0.5">5/min Login • 10/min Dashboard</span>
+    </div>
+  </div>
+</div>
+
+<!-- Table Panel -->
+<div class="bg-card border border-border rounded-2xl p-5 shadow-sm">
+  <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-5">
+    <h3 class="font-display text-sm font-bold text-text flex items-center">
+      <i class="bi bi-list-ul me-2 text-base text-text-muted"></i>
+      Blocked Request History
+      <span class="ml-2 bg-paper text-text-muted border border-border text-[11px] font-mono px-2 py-0.5 rounded-full font-medium">
+        {{ logs|length }} entries
+      </span>
+    </h3>
+
+    <!-- Filter form -->
+    <form method="GET" action="{{ url_for('admin_bp.block_logs') }}" class="flex items-center gap-2">
+      <div class="flex items-center gap-2 bg-paper border border-border rounded-lg px-3 py-1.5 text-text-muted focus-within:border-violet transition-colors w-full sm:w-[260px]">
+        <i class="bi bi-search text-xs"></i>
+        <input
+          type="text"
+          name="search"
+          value="{{ search }}"
+          placeholder="Filter by IP, endpoint, device…"
+          class="border-none bg-transparent outline-none text-xs text-text w-full"
+        />
+        {% if search %}
+        <a href="{{ url_for('admin_bp.block_logs') }}" class="text-text-muted hover:text-text text-xs">
+          <i class="bi bi-x-circle-fill"></i>
+        </a>
+        {% endif %}
+      </div>
+      <button type="submit" class="border border-border bg-card hover:bg-paper text-text py-1.5 px-3 rounded-lg font-semibold text-xs transition-colors">
+        Filter
+      </button>
+    </form>
+  </div>
+
+  <div class="w-full overflow-x-auto">
+    <table class="w-full border-collapse">
+      <thead>
+        <tr class="border-b border-border text-left text-[11px] font-semibold text-text-muted uppercase tracking-wider">
+          <th class="py-3 px-3">#ID</th>
+          <th class="py-3 px-3">Client IP</th>
+          <th class="py-3 px-3">Method</th>
+          <th class="py-3 px-3">Blocked Endpoint</th>
+          <th class="py-3 px-3">Attempts / Policy</th>
+          <th class="py-3 px-3">Device / User Agent</th>
+          <th class="py-3 px-3">Blocked At (Time)</th>
+          <th class="py-3 px-3 text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-border/60 text-xs">
+        {% if logs %}
+          {% for log in logs %}
+          <tr class="hover:bg-paper/60 transition-colors">
+            <td class="py-3 px-3 font-mono font-medium text-text-muted">
+              #{{ log.id }}
+            </td>
+            <td class="py-3 px-3 font-mono">
+              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-light text-amber border border-amber/20 font-semibold text-[11px]">
+                <i class="bi bi-geo-alt-fill text-[10px]"></i>
+                {{ log.ip }}
+              </span>
+            </td>
+            <td class="py-3 px-3">
+              {% if log.methods == 'POST' %}
+                <span class="px-2 py-0.5 rounded-md bg-violet-light text-violet border border-violet/20 font-bold font-mono text-[10px]">
+                  POST
+                </span>
+              {% elif log.methods == 'GET' %}
+                <span class="px-2 py-0.5 rounded-md bg-teal-light text-teal border border-teal/20 font-bold font-mono text-[10px]">
+                  GET
+                </span>
+              {% else %}
+                <span class="px-2 py-0.5 rounded-md bg-paper text-text border border-border font-bold font-mono text-[10px]">
+                  {{ log.methods }}
+                </span>
+              {% endif %}
+            </td>
+            <td class="py-3 px-3 font-mono font-semibold text-text">
+              <span class="inline-block max-w-[200px] truncate" title="{{ log.endpoint }}">
+                {{ log.endpoint }}
+              </span>
+            </td>
+            <td class="py-3 px-3">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-light text-rose border border-rose/25 text-[11px] font-semibold">
+                <i class="bi bi-shield-slash text-[10px]"></i>
+                {{ log.attempts or 'Exceeded limit' }}
+              </span>
+            </td>
+            <td class="py-3 px-3 max-w-[220px]">
+              <span class="text-text-muted truncate block text-[11px]" title="{{ log.device }}">
+                <i class="bi bi-laptop me-1"></i>
+                {{ log.device or 'Unknown' }}
+              </span>
+            </td>
+            <td class="py-3 px-3 font-mono text-text text-[11px] whitespace-nowrap">
+              <div class="flex items-center gap-1.5 text-text-muted">
+                <i class="bi bi-clock-history text-xs text-rose"></i>
+                <span>{{ log.create_at.strftime('%Y-%m-%d %H:%M:%S') if log.create_at else '-' }}</span>
+              </div>
+            </td>
+            <td class="py-3 px-3 text-right">
+              <form action="{{ url_for('admin_bp.delete_block_log', log_id=log.id) }}" method="POST" onsubmit="return confirm('Delete this block record?');" class="inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <button
+                  type="submit"
+                  class="text-text-muted hover:text-rose p-1.5 rounded-md hover:bg-paper transition-colors"
+                  title="Delete record"
+                >
+                  <i class="bi bi-trash text-sm"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="8" class="py-12 text-center text-text-muted">
+              <div class="flex flex-col items-center justify-center gap-2">
+                <div class="w-12 h-12 rounded-full bg-teal-light text-teal flex items-center justify-center text-xl mb-1">
+                  <i class="bi bi-shield-check"></i>
+                </div>
+                <strong class="text-sm text-text">No Blocked Requests Recorded</strong>
+                <p class="text-xs text-text-muted max-w-sm">
+                  {% if search %}
+                    No records matched "{{ search }}". Try resetting your filter.
+                  {% else %}
+                    Traffic is behaving normally. Whenever an IP triggers HTTP 429, it will be automatically recorded here and reported to Telegram.
+                  {% endif %}
+                </p>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

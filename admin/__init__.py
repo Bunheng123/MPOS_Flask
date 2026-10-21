@@ -4,7 +4,7 @@ admin_bp = Blueprint('admin_bp', __name__, template_folder='templates')
 
 @admin_bp.before_request
 def require_admin_login():
-    if request.endpoint in ('admin_bp.login', 'admin_bp.do_login', 'static'):
+    if request.endpoint in ('admin_bp.login', 'admin_bp.do_login', 'admin_bp.register', 'admin_bp.do_register', 'static'):
         return None
     if not session.get('is_login'):
         return redirect(url_for('admin_bp.login'))
@@ -27,4 +27,4 @@ def require_admin_login():
                 session['profile_image'] = "images/no-image.jpg"
                 session['profile'] = None
 
-from admin import dashboard, user, auth
+from admin import dashboard, user, auth, block_log

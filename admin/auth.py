@@ -7,14 +7,13 @@ from extensions import db, limiter
 from models.user import User
 from helpers.upload import get_thumb_name
 
-@admin_bp.get('/login', endpoint='login')
-@limiter.limit("10 per minute") #able to refresh 10 time/ 1 minutes
+@admin_bp.get('/login', endpoint='login')           
 def login():
     module = 'login'
     return render_template('login.html', module=module)
 
 @admin_bp.post('/login', endpoint='do_login')
-@limiter.limit("3 per minute") #allow only 3 attempts
+@limiter.limit("5 per minute") # able to login 5 times per minute
 def do_login():
     module = 'login'
     form = request.form
@@ -50,11 +49,13 @@ def do_login():
     return render_template('login.html', module=module, error="Invalid username or password")
 
 @admin_bp.get('/register', endpoint='register')
+@limiter.limit("10 per minute")
 def register():
     module = 'register'
     return render_template('register.html', module=module)
 
 @admin_bp.post('/register', endpoint='do_register')
+@limiter.limit("5 per minute")
 def do_register():
     module = 'register'
     form = request.form
@@ -82,8 +83,12 @@ def do_register():
         role='user',
         profile=None
     )
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return render_template('register.html', module=module, error="Registration failed. Please try again.")
 
     return redirect(url_for('admin_bp.login'))
 

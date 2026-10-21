@@ -26,7 +26,32 @@ def ratelimit_handler(error):
     client_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     user_agent = request.headers.get('User-Agent', 'Unknown')
 
-    # Trigger Telegram security alert asynchronously
+    # 1. Store block event into database first
+    try:
+        from extensions import db
+        from models.block_log import BlockLog
+        from datetime import datetime
+
+        raw_ip = client_ip or '127.0.0.1'
+        if ',' in raw_ip:
+            raw_ip = raw_ip.split(',')[0].strip()
+
+        log_entry = BlockLog(
+            ip=raw_ip,
+            endpoint=request.path or '/',
+            methods=request.method,
+            attempts=desc,
+            device=(user_agent or 'Unknown')[:500],
+            create_at=datetime.utcnow()
+        )
+        db.session.add(log_entry)
+        db.session.commit()
+    except Exception as db_err:
+        from extensions import db
+        db.session.rollback()
+        print(f"[BlockLog DB Error] Failed to record 429 event: {db_err}")
+
+    # 2. Trigger Telegram security alert asynchronously after DB persistence
     send_rate_limit_alert(
         ip=client_ip,
         method=request.method,

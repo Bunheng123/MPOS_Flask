@@ -1,7 +1,7 @@
 import sys
 from flask import Flask, url_for, render_template, request, jsonify
 from config import Config
-from extensions import db, migrate, limiter, csrf
+from extensions import db, migrate, limiter, csrf , cors
 from helpers.upload import (
     save_user_image,
     delete_profile_image,
@@ -25,6 +25,13 @@ db.init_app(app)
 migrate.init_app(app, db)
 limiter.init_app(app)
 csrf.init_app(app)
+## CORS
+cors.init_app(
+    app,
+    resources={
+        r"/api/*": {"origins": "http://localhost:4200"}
+    }
+)
 
 # Load Models
 import models
@@ -57,5 +64,7 @@ from errors import register_error_handlers
 register_error_handlers(app)
 
 
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)
